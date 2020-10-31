@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "facebook-clone-ng": {
+      "hosting": {
+        "facebook-clone-ng": [
+          "facebook-clone-ng"
+        ]
+      }
+    }
+  }
+}
