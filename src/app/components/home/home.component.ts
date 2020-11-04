@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs'
-import {UserData} from '../../services/auth.service'
+import { from, Subscription } from 'rxjs'
+import {AuthService, UserData} from '../../services/auth.service';
 import {PostService} from '../../services/post.service'
 
 @Component({
@@ -22,12 +22,19 @@ export class HomeComponent implements OnInit, OnDestroy {
   posts: any[] = [];
   user: UserData;
   subs: Subscription[]=[];
-  constructor(private postService: PostService) { }
+  constructor(private postService: PostService,
+              private authSevice: AuthService) { }
 
   ngOnInit(): void {
     this.subs.push(
       this.postService.getAllPosts().subscribe(posts => {
         this.posts = posts
+      })
+    );
+
+    this.subs.push(
+      this.authSevice.CurrentUser().subscribe(user => {
+        this.user = user;
       })
     )
   }
@@ -36,11 +43,18 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subs.map(s => s.unsubscribe())
   }
   postMessage(form: NgForm): void{
-
+    const {message} = form.value;
+    this.postService.postMessage(message, `${this.user.firstName} ${this.user.lastName}`, 
+    {
+      avatar: this.user.avatar,
+      lastName: this.user.lastName,
+      firstName: this.user.firstName
+    })
+      form.resetForm()
   }
 
   logout(): void{
-    
+    this.authSevice.Logout()
   }
 
 }

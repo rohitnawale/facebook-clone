@@ -33,8 +33,8 @@
           <img
             alt=""
             mat-card-avatar
-            [src]="">
-          <span class="name">my name</span>
+            [src]="user?.avatar">
+          <span class="name">{{ user?.firstName || 'Walter'}}</span>
         </div>
         <div>
           <mat-icon>add</mat-icon>
@@ -61,7 +61,7 @@
           <mat-icon [matMenuTriggerFor]="menu">expand_more</mat-icon>
           <mat-menu #menu="matMenu">
             <button mat-menu-item (click)="logout()">
-              <mat-icon>exit_to_app</mat-icon> Logout
+              <mat-icon (click)="logout()">exit_to_app</mat-icon> Logout
             </button>
           </mat-menu>
         </div>
@@ -77,8 +77,8 @@
             <img
               alt=""
               mat-card-avatar
-              src="">
-            <span class="name">My name</span>
+              src="{{ user?.avatar }}">
+            <span class="name">{{ user?.firstName || 'Walter'}} {{ user?.lastName }}</span>
           </div>
           <div>
             <mat-icon> local_hospital</mat-icon>
@@ -128,7 +128,7 @@
             <mat-card-content>
               <img
                 alt="avatar"
-                class="avatar" src="data:image/jpeg;base64,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">
+                class="avatar" src="https://portal.staralliance.com/cms/aux-pictures/prototype-images/avatar-default.png/@@images/image.png">
               <span class="card-name">Walter White</span>
             </mat-card-content>
           </mat-card>
@@ -142,7 +142,7 @@
               <img
                 alt=""
                 mat-card-avatar
-                [src]="">
+                [src]="user?.avatar">
               <form #form="ngForm" (ngSubmit)="postMessage(form)">
                 <input class="on-your-mind" name="message" ngModel placeholder="What's on your mind?" type="text">
                 <button style="display: none;" type="submit"></button>
@@ -172,7 +172,7 @@
             <mat-card-header class="posts__header">
               <img alt="{{ p?.title }}" mat-card-avatar [src]="p?.avatar">
               <div class="posts__header__right">
-                <span>{{ p?.time?.seconds * 1000 | date:'shortTime' }}</span>
+                <span>{{ p?.time?.seconds * 1000 | date:'longDate' }}</span>
                 <h3>{{ p?.title }}</h3>
               </div>
             </mat-card-header>
